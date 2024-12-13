@@ -6,6 +6,12 @@ on:
     types: [print-dispatch]
 
 jobs:
+  log-event:
+    runs-on: ubuntu-latest
+    steps:
+      - name: log event
+        run: echo 'event ${{ github.event }}'
+
   execute-tests:
     name: (E2E) Master - Remote Dispatch
     permissions:
