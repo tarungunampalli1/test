@@ -1,0 +1,14 @@
+# Run E2E tests on the pull request, if it matches with specific label or file changes we'd like to observe.
+name: ve2etests
+
+on:
+  pull_request:
+    types: [labeled, synchronize]
+
+
+jobs:
+	print-test:
+		steps:
+		  - name: print out test
+		    run: echo 'test'
+
