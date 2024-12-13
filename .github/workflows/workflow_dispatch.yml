@@ -6,11 +6,15 @@ on:
     types: [print-dispatch]
 
 jobs:
-  log-event:
+  printJob:
+    name: Print event
     runs-on: ubuntu-latest
     steps:
-      - name: log event
-        run: echo 'event ${{ github.event }}'
+      - name: Dump GitHub context
+        env:
+          GITHUB_CONTEXT: ${{ toJson(github) }}
+        run: |
+          echo "$GITHUB_CONTEXT"
 
   execute-tests:
     name: (E2E) Master - Remote Dispatch
