@@ -2,23 +2,19 @@
 name: ve2etests
 
 on:
-  pull_request:
-    types: [labeled, synchronize]
+  workflow_call:
+    inputs:
+      print:
+        type: string
+        required: true
 
 jobs:
   print-test:
     runs-on: ubuntu-latest
     steps:
       - name: print out test
-        run: echo 'test test'
+        run: echo 'test ${{ inputs.print }}'
 
       - name: skip
         if: ${{ false }}
         run: echo 'skip'
-
-  workflow-two:
-    name: Use Workflow 2
-    uses: ./.github/workflows/workflow2.yml
-    with:
-      print: 'test from workflow1'
-    secrets: inherit
