@@ -1,0 +1,18 @@
+# Run E2E tests against master
+name: ve2etests-dispatch
+
+on:
+  repository_dispatch:
+    types: [print-dispatch]
+
+jobs:
+  execute-tests:
+    name: (E2E) Master - Remote Dispatch
+    permissions:
+      pull-requests: write
+      contents: write
+      pages: read
+    uses: ./.github/workflows/workflow.yml
+    with:
+      print: 'remote dispatch test'
+    secrets: inherit
