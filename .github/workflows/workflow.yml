@@ -11,3 +11,7 @@ jobs:
     steps:
       - name: print out test
         run: echo 'test test'
+
+      - name: skip
+        if: ${{ false }}
+        run: echo 'skip'
