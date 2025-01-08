@@ -9,7 +9,7 @@ on:
 
 jobs:
   report-results:
-    name: E2E Results
+    name: E2E Results (bypass)
     permissions:
       pull-requests: write
       contents: write
