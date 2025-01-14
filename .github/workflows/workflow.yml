@@ -6,7 +6,7 @@ on:
     types: [labeled, synchronize]
 
 env:
-  e2e-cache-key: e2e-cache-key-${{ github.ref }}
+  e2e-cache-key: e2e-cache-key-${{ github.sha }}
   e2e-cache-path: ${{ github.workspace }}/.e2e-cache
 
 jobs:
