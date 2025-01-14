@@ -4,26 +4,28 @@ name: workflow
 on:
   pull_request:
     types: [labeled, synchronize]
-  workflow_call:
-    inputs:
-      print:
-        type: string
-        required: true
+
+env:
+  e2e-cache-key: e2e-cache-key-${{ github.ref }}
+  e2e-cache-path: ${{ github.workspace }}/.e2e-cache
 
 jobs:
-  print-test:
+  cache-results:
+    name: Cache Passed Results
+    if: always()
     runs-on: ubuntu-latest
     steps:
-      - name: print out test
-        run: echo 'test ${{ github.event.inputs.print }}'
-
-      - name: skip
-        if: ${{ false }}
-        run: echo 'skip'
-
-  workflow-two:
-    name: Use Workflow 2
-    uses: ./.github/workflows/workflow2.yml
-    with:
-      print: 'test from workflow1'
-    secrets: inherit
+      - name: Write Results to File
+        # clear file and write new results
+        run: |
+          touch ${{ env.e2e-cache-path }}
+          > ${{ env.e2e-cache-path }}
+          echo "e2e-passed=${{ 'false' }}" >> ${{ env.e2e-cache-path }}
+          echo "e2e-bypassed=${{ 'false' }}" >> ${{ env.e2e-cache-path }}
+      - name: Cache Results
+        uses: actions/upload-artifact@v4
+        with:
+          # cache by commit so new changes still need to be tested
+          name: ${{ env.e2e-cache-key }}
+          path: ${{ env.e2e-cache-path }}
+          overwrite: true
