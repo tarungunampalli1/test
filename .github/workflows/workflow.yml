@@ -22,6 +22,10 @@ jobs:
           > ${{ env.e2e-cache-path }}
           echo "e2e-passed=${{ 'false' }}" >> ${{ env.e2e-cache-path }}
           echo "e2e-bypassed=${{ 'false' }}" >> ${{ env.e2e-cache-path }}
+      - name: Check File exists
+        # clear file and write new results
+        run: |
+          ls -l ${{ github.workspace }}
       - name: Cache Results
         uses: actions/upload-artifact@v4
         with:
