@@ -3,7 +3,7 @@ name: workflow
 
 on:
   pull_request:
-    types: [labeled, synchronize]
+    types: [labeled, synchronize, opened]
 
 env:
   e2e-cache-key: e2e-cache-key-${{ github.sha }}
