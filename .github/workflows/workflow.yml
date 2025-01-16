@@ -10,27 +10,9 @@ env:
   e2e-cache-path: ${{ github.workspace }}/.e2e-cache
 
 jobs:
-  cache-results:
-    name: Cache Passed Results
-    if: always()
+  checkout:
     runs-on: ubuntu-latest
     steps:
-      - name: Write Results to File
-        # clear file and write new results
-        run: |
-          touch ${{ env.e2e-cache-path }}
-          > ${{ env.e2e-cache-path }}
-          echo "e2e-passed=${{ 'false' }}" >> ${{ env.e2e-cache-path }}
-          echo "e2e-bypassed=${{ 'false' }}" >> ${{ env.e2e-cache-path }}
-      - name: Check File exists
-        # clear file and write new results
-        run: |
-          ls -al ${{ github.workspace }}
-      - name: Cache Results
-        uses: actions/upload-artifact@v4
-        with:
-          # cache by commit so new changes still need to be tested
-          name: ${{ env.e2e-cache-key }}
-          path: ${{ env.e2e-cache-path }}
-          include-hidden-files: true
-          overwrite: true
+      - name: Checkout
+        uses: actions/checkout@v4
+      - run: ls -al
