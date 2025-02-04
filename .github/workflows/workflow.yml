@@ -35,11 +35,7 @@ jobs:
           echo Secret Exists=${{ secrets.AWS_SECRET_ACCESS_KEY != '' }}
 
       - name: Test encrypt/decrypt
-        run: |
-          # touch .env
-          # echo AWS_ACCESS_KEY=${{ secrets.AWS_ACCESS_KEY }} >> .env
-          # echo AWS_SECRET_ACCESS_KEY=${{ secrets.AWS_SECRET_ACCESS_KEY }} >> .env
-          node decrypt.js
+        run: node decrypt.js
         env:
           AWS_ACCESS_KEY: ${{ secrets.AWS_ACCESS_KEY }}
           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
