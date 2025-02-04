@@ -30,7 +30,7 @@ jobs:
         run: yarn
 
       - name: Test encrypt/decrypt
-        run: node decrypt.js
-        env:
-          AWS_ACCESS_KEY: ${{ secrets.AWS_ACCESS_KEY }}
-          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+        run: AWS_ACCESS_KEY=${{ secrets.AWS_ACCESS_KEY }} AWS_SECRET_ACCESS_KEY=${{ secrets.AWS_SECRET_ACCESS_KEY }} node decrypt.js
+        # env:
+        #   AWS_ACCESS_KEY: ${{ secrets.AWS_ACCESS_KEY }}
+        #   AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
