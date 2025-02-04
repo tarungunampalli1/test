@@ -5,6 +5,11 @@ import {
 } from '@aws-crypto/client-node';
 import fs from 'node:fs';
 
+if (!process.env.AWS_ACCESS_KEY || !process.env.AWS_SECRET_ACCESS_KEY) {
+  console.error('AWS Credentials not found in env');
+  process.exit(1);
+}
+
 const { encrypt, decrypt } = buildClient(
   CommitmentPolicy.REQUIRE_ENCRYPT_REQUIRE_DECRYPT
 );
@@ -40,11 +45,6 @@ const myDecrypt = async (ciphertext) => {
   console.log(plaintext.toString());
   return plaintext;
 };
-
-if (!process.env.AWS_ACCESS_KEY || !process.env.AWS_SECRET_ACCESS_KEY) {
-  console.error('AWS Credentials not found in env');
-  process.exit(1);
-}
 
 const plaintextInput = 'test text here';
 const ciphertext = await myEncrypt(plaintextInput);
