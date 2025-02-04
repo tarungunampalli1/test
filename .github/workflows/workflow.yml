@@ -16,18 +16,24 @@ permissions:
   id-token: write # This is required for requesting the JWT
   contents: read # This is required for actions/checkout
 jobs:
-  AssumeRoleAndCallIdentity:
+  decrypt-file:
     runs-on: ubuntu-latest
+    env:
+      AWS_ACCESS_KEY: ${{ secrets.AWS_ACCESS_KEY }}
+      AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
     steps:
-      - name: Git clone the repository
-        uses: actions/checkout@v3
-      - name: configure aws credentials
-        uses: aws-actions/configure-aws-credentials@v1.7.0
+      - name: Checkout the repository
+        uses: actions/checkout@v2
+
+      - run: corepack enable
+
+      - uses: actions/setup-node@v4
         with:
-          role-to-assume: arn:aws:iam::430118829593:role/test-role-2
-          role-session-name: GitHub_to_AWS_via_FederatedOIDC
-          aws-region: ${{ env.AWS_REGION }}
-      # Hello from AWS: WhoAmI
-      - name: Sts GetCallerIdentity
-        run: |
-          aws sts get-caller-identity
+          node-version-file: '.nvmrc'
+          cache: 'yarn'
+
+      - name: Install packages
+        run: yarn
+
+      - name: Test encrypt/decrypt
+        run: node decrypt.js
