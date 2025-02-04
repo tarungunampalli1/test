@@ -29,10 +29,6 @@ const myEncrypt = async (plaintextInput) => {
   return ciphertext;
 };
 
-const plaintextInput = 'test text here';
-
-const ciphertext = await myEncrypt(plaintextInput);
-
 const myDecrypt = async (ciphertext) => {
   // DECRYPT
   const keyring = new KmsKeyringNode({
@@ -45,6 +41,13 @@ const myDecrypt = async (ciphertext) => {
   return plaintext;
 };
 
-const plaintext = await myDecrypt(ciphertext);
+if (!process.env.AWS_ACCESS_KEY || !process.env.AWS_SECRET_ACCESS_KEY) {
+  console.error('AWS Credentials not found in env');
+  process.exit(1);
+}
 
+const plaintextInput = 'test text here';
+const ciphertext = await myEncrypt(plaintextInput);
+
+const plaintext = await myDecrypt(ciphertext);
 console.log(plaintext.toString());
