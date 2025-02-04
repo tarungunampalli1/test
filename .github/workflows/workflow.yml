@@ -29,6 +29,11 @@ jobs:
       - name: Install packages
         run: yarn
 
+      - name: Check secrets
+        run: |
+          echo Key Exists=${{ secrets.AWS_ACCESS_KEY != '' }}
+          echo Secret Exists=${{ secrets.AWS_SECRET_ACCESS_KEY != '' }}
+
       - name: Test encrypt/decrypt
         run: AWS_ACCESS_KEY=${{ secrets.AWS_ACCESS_KEY }} AWS_SECRET_ACCESS_KEY=${{ secrets.AWS_SECRET_ACCESS_KEY }} node decrypt.js
         # env:
