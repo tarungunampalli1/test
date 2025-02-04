@@ -2,17 +2,26 @@ import {
   KmsKeyringNode,
   buildClient,
   CommitmentPolicy,
+  getClient,
+  KMS,
 } from '@aws-crypto/client-node';
 import fs from 'node:fs';
 
-// if (!process.env.AWS_ACCESS_KEY || !process.env.AWS_SECRET_ACCESS_KEY) {
-//   console.error('AWS Credentials not found in env');
-//   process.exit(1);
-// }
+if (!process.env.AWS_ACCESS_KEY || !process.env.AWS_SECRET_ACCESS_KEY) {
+  console.error('AWS Credentials not found in env');
+  process.exit(1);
+}
 
 const { encrypt, decrypt } = buildClient(
   CommitmentPolicy.REQUIRE_ENCRYPT_REQUIRE_DECRYPT
 );
+
+const clientProvider = getClient(KMS, {
+  credentials: {
+    accessKeyId: process.env.AWS_ACCESS_KEY,
+    secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY,
+  },
+});
 
 const generatorKeyId =
   'arn:aws:kms:us-east-1:430118829593:key/941c7426-2a4a-43db-9a74-9ab3e9bb6048';
@@ -25,7 +34,11 @@ const myEncrypt = async (plaintextInput) => {
     origin: 'us-west-2',
   };
 
-  const keyring = new KmsKeyringNode({ generatorKeyId, keysIds: [] });
+  const keyring = new KmsKeyringNode({
+    generatorKeyId,
+    keysIds: [],
+    clientProvider,
+  });
   const { result: ciphertext } = await encrypt(keyring, plaintextInput, {
     encryptionContext: context,
   });
@@ -40,6 +53,7 @@ const myDecrypt = async (ciphertext) => {
     keyIds: [
       'arn:aws:kms:us-east-1:430118829593:key/941c7426-2a4a-43db-9a74-9ab3e9bb6048',
     ],
+    clientProvider,
   });
   const { plaintext, messageHeader } = await decrypt(keyring, ciphertext);
   console.log(plaintext.toString());
