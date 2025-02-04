@@ -37,8 +37,8 @@ jobs:
       - name: Test encrypt/decrypt
         run: |
           touch .env
-          echo AWS_ACCESS_KEY=${{ secrets.AWS_ACCESS_KEY }} > .env
-          echo AWS_SECRET_ACCESS_KEY=${{ secrets.AWS_SECRET_ACCESS_KEY }} > .env
+          echo AWS_ACCESS_KEY=${{ secrets.AWS_ACCESS_KEY }} >> .env
+          echo AWS_SECRET_ACCESS_KEY=${{ secrets.AWS_SECRET_ACCESS_KEY }} >> .env
           node decrypt.js
         # env:
         #   AWS_ACCESS_KEY: ${{ secrets.AWS_ACCESS_KEY }}
