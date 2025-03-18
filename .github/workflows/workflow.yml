@@ -5,14 +5,15 @@ on:
   pull_request:
     types: [labeled, synchronize, opened]
 
-env:
-  e2e-cache-key: e2e-cache-key-${{ github.sha }}
-  e2e-cache-path: ${{ github.workspace }}/.e2e-cache
-
 jobs:
-  checkout:
+  check-changed-packages:
+    name: Check if yarn.lock changed
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout
+      - name: Checkout code
         uses: actions/checkout@v4
-      - run: ls -al
+
+      - name: Get changed files
+        id: changed-files
+        # commit sha refers to v46.0.1: https://github.com/tj-actions/changed-files/commit/45fb12d7a8bedb4da42342e52fe054c6c2c3fd73
+        uses: tj-actions/changed-files@45fb12d7a8bedb4da42342e52fe054c6c2c3fd73
