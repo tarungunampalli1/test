@@ -31,4 +31,4 @@ jobs:
       - name: Parse body
         run: |
           echo "${{steps.set-result.outputs.result}}"
-          echo "${{steps.set-result.outputs.result}}" | mdq -q '- [x]'
+          echo "${{steps.set-result.outputs.result}}" | ./mdq '- [x]'
