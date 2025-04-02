@@ -10,11 +10,9 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - run: |
-          curl -Os https://github.com/yshavit/mdq/releases/download/v0.5.0/mdq-ubuntu.zip
-          ls
-          file mdq-ubuntu.zip
+          curl -OLs https://github.com/yshavit/mdq/releases/download/v0.5.0/mdq-ubuntu.zip
           unzip mdq-ubuntu.zip
-          chmod +x mdq
+          # chmod +x mdq
 
       - name: test script
         uses: actions/github-script@v7
