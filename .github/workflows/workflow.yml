@@ -12,6 +12,7 @@ jobs:
       - run: |
           curl -Os https://github.com/yshavit/mdq/releases/download/v0.5.0/mdq-ubuntu.zip
           ls
+          file mdq-ubuntu.zip
           unzip mdq-ubuntu.zip
           chmod +x mdq
 
