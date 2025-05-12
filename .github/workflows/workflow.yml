@@ -2,8 +2,8 @@
 name: workflow
 
 on:
-  issues:
-    types: [edited]
+  pull_request:
+    types: [opened, synchronize, reopened]
 
 jobs:
   log-context:
@@ -13,3 +13,16 @@ jobs:
         run: echo "$GITHUB_CONTEXT"
         env:
           GITHUB_CONTEXT: ${{ toJson(github) }}
+
+      - name: Update OriginPath in Distribution Config
+        id: update-origin-path
+        uses: actions/github-script@v7
+        with:
+          script: |
+            core.setOutput('ETag', 'test ETag');
+            core.setOutput('distributionConfig', 'test ddistro config');
+
+      - name: Print updated distribution config
+        run: |
+          echo "ETag: ${{ steps.update-origin-path.outputs.ETag }}"
+          echo "updated distribution: ${{ steps.update-origin-path.outputs.distribution_config }}"
